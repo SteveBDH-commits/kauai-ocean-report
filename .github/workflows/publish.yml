@@ -1,0 +1,69 @@
+name: Publish ocean report
+
+on:
+  schedule:
+    - cron: '7,37 * * * *'      # every 30 minutes (offset from the top of the hour, which is busy)
+  workflow_dispatch:            # lets you press "Run workflow" by hand
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      NWS_USER_AGENT: ${{ secrets.NWS_USER_AGENT }}
+      PAGES_URL: ${{ vars.PAGES_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check the NWS contact setting exists
+        run: |
+          if [ -z "$NWS_USER_AGENT" ]; then
+            echo "::error::Add a repository secret named NWS_USER_AGENT (Settings > Secrets and variables > Actions). Example value: KauaiBeachGuide (you@example.com)"
+            exit 1
+          fi
+
+      - name: Run tests
+        run: npm test
+
+      # Keep the last good report if NWS is unreachable during this run: start from what is already published.
+      - name: Fetch previously published report
+        run: |
+          mkdir -p site
+          OWNER="${GITHUB_REPOSITORY_OWNER,,}"
+          REPO="${GITHUB_REPOSITORY#*/}"
+          BASE="${PAGES_URL:-https://${OWNER}.github.io/${REPO}}"
+          curl -fsSL "${BASE%/}/ocean-report.json" -o site/ocean-report.json || echo "No previous report found (normal on the first run)"
+
+      # Exits non-zero only if NOTHING could be refreshed. Then nothing is deployed, the site keeps its
+      # last version, the page's own age warning takes over, and GitHub emails you about the failed run.
+      - name: Build report
+        run: node src/build.mjs --out site/ocean-report.json
+
+      - name: Assemble site
+        run: node src/assemble-site.mjs --out site
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

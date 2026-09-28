@@ -1,0 +1,16 @@
+{
+  "name": "kauai-ocean-report",
+  "version": "0.1.0",
+  "description": "Fetches and parses official NWS/Honolulu surf, tide and alert data for Kauai into one JSON file for the Kauai Beach Guide web app.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test",
+    "build": "node src/build.mjs --out out/ocean-report.json",
+    "start": "node src/serve.mjs",
+    "site": "node src/assemble-site.mjs --out site"
+  }
+}

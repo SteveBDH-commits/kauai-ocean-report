@@ -1,0 +1,186 @@
+FZHW52 PHFO 280125
+SRFHFO
+
+Surf Zone Forecast for Hawaii
+National Weather Service Honolulu HI
+325 PM HST Sun Sep 27 2026
+
+.DISCUSSION...
+A broad area of rough short period east swell is lowering from east 
+to west. As a result, the High Surf Advisory for east-facing shores 
+of Oahu and Kauai remains in effect through tonight, while surf on Big
+Island and Maui County has fallen below the advisory level. East 
+shore surf will slowly decline Monday through Wednesday, though small,
+medium period swells from distant east Pacific hurricanes will 
+maintain moderate surf during the remainder of the week.
+
+A mix of long to medium period south-southwest swell and building
+short to medium period south swell from Hurricane Nolo will keep
+surf along south facing shores elevated during the next couple of
+days. The hurricane swell may push heights to the advisory level 
+level on Monday. As Nolo makes a turn toward the north-northwest, the
+likelihood of advisory level surf from the shifting southwest swell 
+will increase Monday night and Tuesday, especially across Kauai and 
+Oahu. By Wednesday, the swell will switch out of the west.
+
+On north facing shores, a small medium period swell will maintain
+small surf through Monday, followed by a decline Tuesday. Some
+wrapping west swell from Hurricane Nolo is possible by Wednesday.
+
+HIZ003-029>031-290230-
+Kauai-
+325 PM HST Sun Sep 27 2026
+
+...HIGH SURF ADVISORY FOR EAST FACING SHORES...
+
+__________________________________________________________________
+                      Tonight                    Monday
+
+Shores                  Surf                       Surf     
+                     PM     AM                  AM     PM 
+__________________________________________________________________
+
+North Facing         4-6    4-6                 3-5    3-5 
+West Facing          3-5    3-5                 4-6    5-7 
+South Facing         6-8    6-8                7-10   7-10 
+East Facing         9-12   7-10                 6-8    6-8 
+                                                                  
+
+.TONIGHT...
+Weather.....................Mostly cloudy. Scattered showers. 
+Low Temperature.............In the mid 70s. 
+Winds.......................East winds around 15 mph.
+Tides...
+   Hanalei Bay..............Low 0.1 feet 08:32 PM HST.
+                            High 2.2 feet 03:52 AM HST.
+   Nawiliwili...............High 1.5 feet 03:50 PM HST.
+                            Low 0.1 feet 09:54 PM HST.
+                            High 2.0 feet 04:53 AM HST.
+
+.MONDAY...
+Weather.....................Partly sunny. Scattered showers. 
+High Temperature............In the upper 80s. 
+Winds.......................East winds around 15 mph.
+Tides...
+   Hanalei Bay..............Low 0.6 feet 09:43 AM HST.
+                            High 1.4 feet 03:14 PM HST.
+   Nawiliwili...............Low 0.6 feet 11:05 AM HST.
+                            High 1.3 feet 04:15 PM HST. 
+Sunrise.....................6:28 AM HST. 
+Sunset......................6:29 PM HST.
+
+$$
+
+HIZ006-007-009-032>035-290230-
+Oahu-
+325 PM HST Sun Sep 27 2026
+
+...HIGH SURF ADVISORY FOR EAST FACING SHORES...
+
+__________________________________________________________________
+                      Tonight                    Monday
+
+Shores                  Surf                       Surf     
+                     PM     AM                  AM     PM 
+__________________________________________________________________
+
+North Facing         4-6    4-6                 3-5    3-5 
+West Facing          3-5    3-5                 4-6    5-7 
+South Facing         6-8    6-8                7-10   7-10 
+East Facing         8-12   7-10                 6-8    6-8 
+                                                                  
+
+.TONIGHT...
+Weather.....................Mostly sunny until 6 PM, then mostly 
+                            cloudy. Isolated showers. 
+Low Temperature.............In the upper 70s. 
+Winds.......................East winds around 20 mph.
+Tides...
+   Honolulu.................High 1.5 feet 04:14 PM HST.
+                            Low 0.0 feet 10:19 PM HST.
+                            High 2.1 feet 05:08 AM HST.
+   Waianae..................High 1.4 feet 04:34 PM HST.
+                            Low 0.0 feet 10:37 PM HST.
+                            High 1.9 feet 05:28 AM HST.
+
+.MONDAY...
+UV Index....................Extreme. 
+Weather.....................Partly sunny. Isolated showers. 
+High Temperature............In the upper 80s. 
+Winds.......................East winds around 20 mph.
+Tides...
+   Honolulu.................Low 0.5 feet 11:39 AM HST.
+                            High 1.3 feet 04:46 PM HST.
+   Waianae..................Low 0.5 feet 11:57 AM HST.
+                            High 1.2 feet 05:06 PM HST. 
+Sunrise.....................6:22 AM HST. 
+Sunset......................6:23 PM HST.
+
+$$
+
+HIZ023-026-051-290230-
+Big Island Leeward-
+325 PM HST Sun Sep 27 2026
+
+__________________________________________________________________
+                      Tonight                    Monday
+
+Shores                  Surf                       Surf     
+                     PM     AM                  AM     PM 
+__________________________________________________________________
+
+West Facing          3-5    3-5                 4-6    6-8 
+South Facing         6-8    6-8                7-10   7-10 
+                                                                  
+
+.TONIGHT...
+Weather.....................Partly cloudy. 
+Low Temperature.............In the lower 70s. 
+Winds.......................West winds around 5 mph, becoming south 
+                            in the evening, then becoming northeast 
+                            after midnight.
+Tides...
+   Kona.....................High 1.8 feet 03:55 PM HST.
+                            Low -0.1 feet 10:08 PM HST.
+                            High 2.1 feet 04:47 AM HST.
+
+.MONDAY...
+Weather.....................Mostly sunny. 
+High Temperature............In the upper 80s. 
+Winds.......................Northwest winds around 5 mph.
+Tides...
+   Kona.....................Low 0.5 feet 10:56 AM HST.
+                            High 1.6 feet 04:21 PM HST.
+Sunrise.....................6:14 AM HST. 
+Sunset......................6:16 PM HST.
+
+$$
+
+
+__________________________________________________________________
+
+Product Legend: 
+
+Surf:        Height of the surf from trough to crest (face value)
+             in feet.
+
+Tides:       Heights displayed are relative to the Mean Lower Low
+             Water (MLLW) datum in feet.
+
+Surf heights can vary significantly from beach to beach along a
+coastline. Surf larger than the upper end of the range provided in
+the forecast will occur periodically, sometimes up to a few hours
+apart. Expect to encounter rip currents in or near the surf zone,
+with rip current strength increasing with surf size. Swimmers are
+urged to exercise caution at all times and enter the water near a
+lifeguard.
+
+For the latest beach hazard and safety information at individual
+beaches in Hawaii refer to:
+
+https://hawaiibeachsafety.com
+
+__________________________________________________________________
+
+$$
+

@@ -1,0 +1,97 @@
+{
+  "_note": "SYNTHETIC fixture: hand-built to match the documented api.weather.gov alert shape. Replace/validate with a real captured response.",
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "urn:test:1",
+      "type": "Feature",
+      "properties": {
+        "id": "urn:test:1",
+        "areaDesc": "Kauai Windward; Kauai Leeward",
+        "geocode": { "UGC": ["HIZ029", "HIZ030"] },
+        "status": "Actual",
+        "messageType": "Alert",
+        "severity": "Moderate",
+        "certainty": "Likely",
+        "urgency": "Expected",
+        "event": "High Surf Advisory",
+        "sent": "2026-09-27T15:30:00-10:00",
+        "effective": "2026-09-27T15:30:00-10:00",
+        "onset": "2026-09-27T15:30:00-10:00",
+        "expires": "2026-09-28T04:00:00-10:00",
+        "ends": "2026-09-28T06:00:00-10:00",
+        "senderName": "NWS Honolulu HI",
+        "headline": "High Surf Advisory issued September 27 at 3:30PM HST until 6AM HST Monday by NWS Honolulu HI",
+        "description": "* WHAT...Large breaking waves of 9 to 12 feet along east facing shores.",
+        "instruction": "Inexperienced swimmers should remain out of the water."
+      }
+    },
+    {
+      "id": "urn:test:2",
+      "type": "Feature",
+      "properties": {
+        "id": "urn:test:2",
+        "areaDesc": "Kauai Windward Waters",
+        "geocode": { "UGC": ["PHZ111"] },
+        "status": "Actual",
+        "messageType": "Alert",
+        "severity": "Minor",
+        "certainty": "Likely",
+        "urgency": "Expected",
+        "event": "Small Craft Advisory",
+        "onset": "2026-09-27T15:05:00-10:00",
+        "expires": "2026-09-28T04:00:00-10:00",
+        "ends": "2026-09-28T18:00:00-10:00",
+        "senderName": "NWS Honolulu HI",
+        "headline": "Small Craft Advisory in effect until 6 PM HST Monday",
+        "description": "East winds 20 to 25 knots. Seas 10 to 13 feet.",
+        "instruction": null
+      }
+    },
+    {
+      "id": "urn:test:3",
+      "type": "Feature",
+      "properties": {
+        "id": "urn:test:3",
+        "areaDesc": "Maui County Windward; Molokai",
+        "geocode": { "UGC": ["HIZ017", "HIZ018"] },
+        "status": "Actual",
+        "messageType": "Alert",
+        "severity": "Moderate",
+        "event": "High Surf Advisory",
+        "onset": "2026-09-27T15:30:00-10:00",
+        "expires": "2026-09-28T04:00:00-10:00"
+      }
+    },
+    {
+      "id": "urn:test:4",
+      "type": "Feature",
+      "properties": {
+        "id": "urn:test:4",
+        "areaDesc": "Kauai Windward",
+        "geocode": { "UGC": ["HIZ029"] },
+        "status": "Test",
+        "messageType": "Alert",
+        "severity": "Severe",
+        "event": "Tsunami Warning",
+        "onset": "2026-09-27T12:00:00-10:00",
+        "expires": "2026-09-27T13:00:00-10:00"
+      }
+    },
+    {
+      "id": "urn:test:5",
+      "type": "Feature",
+      "properties": {
+        "id": "urn:test:5",
+        "areaDesc": "Kauai Mountains",
+        "geocode": { "UGC": ["HIZ003"] },
+        "status": "Actual",
+        "messageType": "Alert",
+        "severity": "Minor",
+        "event": "Special Weather Statement",
+        "onset": "2026-09-27T14:00:00-10:00",
+        "expires": "2026-09-28T02:00:00-10:00"
+      }
+    }
+  ]
+}

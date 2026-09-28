@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Kauai ocean report: test view</title>
+<style>
+  :root {
+    --ink: #10303f;
+    --slate: #52707f;
+    --sea: #1b6f8c;
+    --foam: #eaf2f2;
+    --rule: #b9cfd2;
+    --flag-yellow: #f2b632;
+    --flag-red: #c4372c;
+    --ok: #1f7a55;
+    --paper: #f8fbfb;
+    box-sizing: border-box;
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { background: var(--foam); color: var(--ink); }
+  body {
+    margin: 0 auto; max-width: 62rem; padding: 1.5rem 1.25rem 4rem;
+    font: 16px/1.5 "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    font-variant-numeric: tabular-nums;
+  }
+  h1 { font-size: 1.75rem; line-height: 1.15; margin: 0 0 .25rem; letter-spacing: -.01em; }
+  h2 { font-size: 1.15rem; margin: 2.25rem 0 .75rem; padding-top: .75rem; border-top: 2px solid var(--ink); }
+  h3 { font-size: 1rem; margin: 0 0 .35rem; }
+  p { margin: 0 0 .5rem; max-width: 70ch; }
+  .lede { color: var(--slate); }
+  .controls { display: flex; gap: .5rem; flex-wrap: wrap; margin: 1rem 0 0; align-items: center; }
+  button {
+    font: inherit; font-weight: 600; padding: .5rem 1rem; border-radius: 4px; cursor: pointer;
+    border: 2px solid var(--ink); background: var(--paper); color: var(--ink);
+  }
+  button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  button:focus-visible, summary:focus-visible { outline: 3px solid var(--sea); outline-offset: 2px; }
+  .loading { color: var(--slate); margin-left: .5rem; }
+
+  .pill { display: inline-block; padding: .05rem .55rem; border-radius: 999px; font-weight: 700; font-size: .875rem; border: 2px solid currentColor; }
+  .pill.ok { color: var(--ok); }
+  .pill.expired, .pill.stale { color: #8a5a00; background: #fdf0cf; }
+  .pill.missing { color: var(--flag-red); background: #fbe4e1; }
+
+  dl.health { display: grid; grid-template-columns: max-content 1fr; gap: .3rem 1.25rem; margin: 0; }
+  dl.health dt { color: var(--slate); }
+  dl.health dd { margin: 0; }
+
+  .problem { margin: 1rem 0 0; padding: .75rem 1rem; border-left: 6px solid var(--flag-red); background: #fbe4e1; }
+  .problem ul { margin: .25rem 0 0; padding-left: 1.2rem; }
+  .note { margin: 1rem 0 0; padding: .75rem 1rem; border-left: 6px solid var(--flag-yellow); background: #fdf0cf; }
+  .demo { margin: 1rem 0 0; padding: .75rem 1rem; border-left: 6px solid var(--sea); background: #dcecf1; }
+
+  .alert { margin: 0 0 .75rem; padding: .6rem 1rem; border-left: 8px solid var(--slate); background: var(--paper); }
+  .alert.sev-Extreme, .alert.sev-Severe { border-left-color: var(--flag-red); }
+  .alert.sev-Moderate { border-left-color: var(--flag-yellow); }
+  .alert .meta { color: var(--slate); font-size: .9rem; }
+  .alert.general { opacity: .75; }
+  .empty { padding: .75rem 1rem; background: var(--paper); border-left: 8px solid var(--ok); }
+
+  /* Surf compass: shores are placed where they are on the island */
+  .compass {
+    display: grid; gap: .75rem;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: ". north ." "west centre east" ". south .";
+  }
+  .shore { grid-area: var(--area); padding: .75rem; background: var(--paper); border: 2px solid var(--ink); border-radius: 4px; }
+  .shore.north { --area: north; } .shore.south { --area: south; }
+  .shore.east { --area: east; } .shore.west { --area: west; }
+  .centre { grid-area: centre; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--slate); font-size: .9rem; }
+  .centre strong { font-size: 1.5rem; color: var(--ink); }
+  .slot { display: grid; grid-template-columns: 5.6rem 1fr 3.9rem; align-items: center; gap: .5rem; font-size: .875rem; margin-top: .3rem; }
+  .slot .lab { color: var(--slate); white-space: nowrap; }
+  .slot .val { text-align: right; font-weight: 700; white-space: nowrap; }
+  .track { position: relative; height: .9rem; background: repeating-linear-gradient(90deg, var(--foam) 0 calc(100% / var(--ticks) - 1px), var(--rule) calc(100% / var(--ticks) - 1px) calc(100% / var(--ticks))); border-radius: 2px; }
+  .range { position: absolute; top: 0; bottom: 0; background: var(--sea); border-radius: 2px; min-width: 4px; }
+  .scale { color: var(--slate); font-size: .85rem; margin-top: .5rem; }
+  .oddcell { color: var(--flag-red); font-weight: 700; }
+
+  .period { padding: 0 0 1rem; margin: 0 0 1rem; border-bottom: 1px solid var(--rule); }
+  .period dl { display: grid; grid-template-columns: 6rem 1fr; gap: .15rem 1rem; margin: 0; }
+  .period dt { color: var(--slate); }
+  .period dd { margin: 0; }
+  ul.tides { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .25rem .9rem; }
+
+  details { margin: 1rem 0 0; }
+  textarea { width: 100%; font: .85rem/1.4 ui-monospace, "SF Mono", Consolas, monospace; padding: .75rem; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); }
+  summary { cursor: pointer; font-weight: 600; }
+  pre { overflow: auto; max-height: 28rem; padding: 1rem; background: var(--paper); border: 1px solid var(--rule); font-size: .8rem; }
+
+  @media (max-width: 42rem) {
+    .compass { grid-template-columns: 1fr; grid-template-areas: "north" "east" "south" "west" "centre"; }
+    dl.health, .period dl { grid-template-columns: 1fr; }
+    dl.health dt { margin-top: .5rem; }
+  }
+</style>
+</head>
+<body data-mode="server" data-json-url="ocean-report.json">
+  <h1>Kauai ocean report: test view</h1>
+  <p class="lede">This shows exactly what the web app will read. It is a test page for checking the data, not for deciding whether to go in the water.</p>
+
+  <div class="controls" role="group" aria-label="Report controls">
+    <button type="button" id="btn-live" aria-pressed="true">Live from NWS</button>
+    <button type="button" id="btn-sample" aria-pressed="false">Sample data</button>
+    <button type="button" id="btn-refresh" hidden>Refresh</button>
+    <button type="button" id="btn-copy">Copy summary</button>
+    <span class="loading" id="loading" role="status"></span>
+  </div>
+  <details id="summary-box" hidden>
+    <summary>Summary text (select and copy if the button could not copy it)</summary>
+    <textarea id="summary" readonly rows="14" aria-label="Report summary"></textarea>
+  </details>
+
+  <div id="app"></div>
+
+<script>
+'use strict';
+const app = document.getElementById('app');
+const loading = document.getElementById('loading');
+
+// "server" = the local test server (buttons for live / sample data).
+// "static" = published site: reads a plain ocean-report.json file that a scheduled job keeps fresh.
+const MODE = document.body.dataset.mode === 'static' ? 'static' : 'server';
+const JSON_URL = document.body.dataset.jsonUrl || 'ocean-report.json';
+const STALE_REPORT_MS = 2 * 60 * 60 * 1000; // warn loudly if the report file itself is older than this
+const AUTO_REFRESH_MS = 5 * 60 * 1000;
+
+let currentReport = null;
+
+// Build DOM without innerHTML so text from NWS can never be interpreted as markup.
+function h(tag, props, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(props || {})) {
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v; else if (k === 'style') el.style.cssText = v; else el.setAttribute(k, v);
+  }
+  for (const kid of kids.flat(Infinity)) {
+    if (kid == null || kid === false) continue;
+    el.append(typeof kid === 'object' ? kid : document.createTextNode(String(kid)));
+  }
+  return el;
+}
+
+const TZ = 'Pacific/Honolulu';
+const when = (iso) => iso ? new Date(iso).toLocaleString('en-US', { timeZone: TZ, weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) + ' HST' : 'n/a';
+const weekday = (iso) => iso ? new Date(iso).toLocaleDateString('en-US', { timeZone: TZ, weekday: 'short' }) : '';
+function ago(iso, now = Date.now()) {
+  const mins = Math.round((now - new Date(iso).getTime()) / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins} min ago`;
+  const hrs = Math.floor(mins / 60);
+  return hrs < 48 ? `${hrs} h ${mins % 60} min ago` : `${Math.floor(hrs / 24)} days ago`;
+}
+
+const STATUS_TEXT = {
+  ok: 'Current',
+  expired: 'Past its expiry time',
+  stale: 'Refresh failed: showing older data',
+  missing: 'Unavailable',
+};
+const pill = (status) => h('span', { class: `pill ${status}` }, STATUS_TEXT[status] || status);
+
+// The report file can be hours old by the time someone opens it, so re-check expiry against the clock here.
+function effective(r) {
+  const now = r.demo ? Date.parse(r.demo.frozenAt) : Date.now();
+  const f = r.forecast, a = r.alerts;
+  let fStatus = f.status;
+  if (f.data && fStatus === 'ok' && Date.parse(f.data.expiresAt) <= now) fStatus = 'expired';
+  const items = a.items.filter((al) => {
+    const end = al.ends || al.expires;
+    return !end || Date.parse(end) > now;
+  });
+  const builtAgeMs = now - Date.parse(r.generatedAt);
+  return { now, fStatus, items, builtAgeMs, reportStale: !r.demo && builtAgeMs > STALE_REPORT_MS };
+}
+
+function renderHealth(r, eff) {
+  const f = r.forecast, a = r.alerts, d = f.data;
+  const demo = Boolean(r.demo);
+  const nodes = [];
+  if (demo) nodes.push(h('div', { class: 'demo' }, r.demo.note, ' Times below are shown as of the frozen moment, not today.'));
+  if (eff.reportStale) {
+    nodes.push(h('div', { class: 'problem' }, h('strong', null, `This report was built ${ago(r.generatedAt)}. `),
+      'The scheduled refresh may have stopped, so everything below may be out of date. Check weather.gov/hfo for current conditions.'));
+  }
+
+  nodes.push(h('h2', null, 'Data health'));
+  nodes.push(h('dl', { class: 'health' },
+    h('dt', null, 'Report built'), h('dd', null, demo ? 'n/a (sample)' : `${when(r.generatedAt)} (${ago(r.generatedAt)})`),
+    h('dt', null, 'Surf forecast'), h('dd', null, pill(eff.fStatus)),
+    d && h('dt', null, 'Issued'), d && h('dd', null, `${when(d.issuedAt)}${demo ? '' : ` (${ago(d.issuedAt)})`}`),
+    d && h('dt', null, 'Valid until'), d && h('dd', null, when(d.expiresAt)),
+    f.fetchedAt && h('dt', null, 'Forecast fetched'), f.fetchedAt && h('dd', null, demo ? 'n/a (sample)' : ago(f.fetchedAt)),
+    h('dt', null, 'Alerts'), h('dd', null, pill(a.status)),
+    a.fetchedAt && h('dt', null, 'Alerts fetched'), a.fetchedAt && h('dd', null, demo ? 'n/a (sample)' : ago(a.fetchedAt)),
+  ));
+
+  const problems = [...(r.errors || []), ...(f.warnings || []).map((w) => `parser warning: ${w}`)];
+  if (problems.length) {
+    nodes.push(h('div', { class: 'problem' }, h('strong', null, 'Problems found'), h('ul', null, problems.map((p) => h('li', null, p)))));
+  }
+  if (f.status === 'missing' && MODE === 'server') {
+    nodes.push(h('p', { class: 'note' }, 'The live fetch did not work. Read the problem above; if it says HTTP 403 or a network error, the machine could not reach NWS. Try "Sample data" to check that the page itself works.'));
+  }
+  for (const n of r.notes || []) nodes.push(h('p', { class: 'note' }, n));
+  return nodes;
+}
+
+function renderAlerts(r, eff) {
+  const a = r.alerts;
+  const nodes = [h('h2', null, 'Alerts for Kauai')];
+  if (a.status === 'missing') {
+    // Never say "no alerts" when we simply don't know.
+    nodes.push(h('p', { class: 'problem' }, 'Alerts could not be loaded, so this page cannot say whether any are active. Check weather.gov/hfo before going in the water.'));
+    return nodes;
+  }
+  if (a.status === 'stale') {
+    nodes.push(h('p', { class: 'note' }, `Alerts could not be refreshed. These are from ${when(a.fetchedAt)} and may be out of date.`));
+  } else if (eff.reportStale) {
+    nodes.push(h('p', { class: 'note' }, `These alerts are from ${when(a.fetchedAt)} and are not current.`));
+  }
+  if (!eff.items.length) {
+    nodes.push(h('p', { class: 'empty' }, a.status === 'ok' && !eff.reportStale ? 'No active NWS alerts for Kauai at the last check.' : 'No unexpired alerts in the data we have.'));
+    return nodes;
+  }
+  for (const al of eff.items) {
+    nodes.push(h('div', { class: `alert sev-${al.severity}${al.oceanRelevant ? '' : ' general'}` },
+      h('h3', null, al.event),
+      al.headline && h('p', null, al.headline),
+      h('p', { class: 'meta' }, `${al.severity} severity` + (al.ends || al.expires ? `, until ${when(al.ends || al.expires)}` : '') + (al.oceanRelevant ? '' : ', general weather')),
+      al.instruction && h('p', null, al.instruction),
+    ));
+  }
+  return nodes;
+}
+
+function renderSurf(r, eff) {
+  const d = r.forecast.data;
+  if (!d) return [h('h2', null, 'Surf by shore'), h('p', { class: 'problem' }, 'No surf forecast available.')];
+  const nodes = [h('h2', null, 'Surf by shore')];
+  if (eff.fStatus === 'expired') {
+    nodes.push(h('p', { class: 'problem' }, `This forecast was valid until ${when(d.expiresAt)} and has passed. A newer one should be at weather.gov/hfo/SRF; do not treat these numbers as current.`));
+  } else if (eff.fStatus === 'stale') {
+    nodes.push(h('p', { class: 'note' }, `The forecast could not be refreshed. These numbers are from the forecast issued ${when(d.issuedAt)}.`));
+  }
+  if (d.advisories.length) nodes.push(h('p', { class: 'note' }, h('strong', null, 'Forecast advisory: '), d.advisories.join('; ')));
+
+  let max = 0;
+  for (const cells of Object.values(d.surf)) for (const c of cells) if (c.maxFt != null) max = Math.max(max, c.maxFt);
+  const top = Math.max(12, Math.ceil(max / 3) * 3); // shared scale so shores are visually comparable
+  const ticks = top / 3;
+
+  const shoreCard = (dir) => {
+    const cells = d.surf[dir];
+    if (!cells) return null;
+    return h('section', { class: `shore ${dir}`, 'aria-label': `${dir} facing shores` },
+      h('h3', null, `${dir[0].toUpperCase()}${dir.slice(1)} facing`),
+      cells.map((c) => h('div', { class: 'slot' },
+        h('span', { class: 'lab' }, `${c.period} ${c.slot}`),
+        c.minFt == null
+          ? h('span', { class: 'oddcell' }, `unreadable: "${c.raw ?? '?'}"`)
+          : h('span', { class: 'track', style: `--ticks:${ticks}`, role: 'img', 'aria-label': `${c.minFt} to ${c.maxFt} feet` },
+              h('span', { class: 'range', style: `left:${(c.minFt / top) * 100}%;width:${((c.maxFt - c.minFt) / top) * 100}%` })),
+        h('span', { class: 'val' }, c.minFt == null ? '' : c.minFt === c.maxFt ? `${c.minFt} ft` : `${c.minFt}-${c.maxFt} ft`),
+      )),
+    );
+  };
+
+  nodes.push(h('div', { class: 'compass' },
+    shoreCard('north'), shoreCard('west'),
+    h('div', { class: 'centre' }, h('strong', null, 'Kauai'), 'Full-face surf height', 'by the direction each shore faces'),
+    shoreCard('east'), shoreCard('south'),
+  ));
+  nodes.push(h('p', { class: 'scale' }, `Each bar spans the forecast range on a 0 to ${top} ft scale; gridlines every 3 ft. NWS notes that surf can vary a lot from beach to beach.`));
+  return nodes;
+}
+
+function renderPeriods(r) {
+  const d = r.forecast.data;
+  if (!d) return [];
+  const nodes = [h('h2', null, 'Weather, tides and sun')];
+  for (const p of d.periods) {
+    nodes.push(h('div', { class: 'period' },
+      h('h3', null, p.name),
+      h('dl', null,
+        p.weather && [h('dt', null, 'Weather'), h('dd', null, p.weather)],
+        p.temperature && [h('dt', null, p.temperature.kind === 'low' ? 'Low' : 'High'), h('dd', null, p.temperature.text)],
+        p.winds && [h('dt', null, 'Winds'), h('dd', null, p.winds)],
+        p.uvIndex && [h('dt', null, 'UV index'), h('dd', null, p.uvIndex)],
+        p.tides.map((t) => [
+          h('dt', null, t.station),
+          h('dd', null, h('ul', { class: 'tides' }, t.entries.map((e) =>
+            h('li', null, `${e.type === 'high' ? 'High' : 'Low'} ${e.heightFt} ft, ${weekday(e.at)} ${e.timeText}`)))),
+        ]),
+        p.sunrise && [h('dt', null, 'Sunrise'), h('dd', null, p.sunrise.text)],
+        p.sunset && [h('dt', null, 'Sunset'), h('dd', null, p.sunset.text)],
+      ),
+    ));
+  }
+  return nodes;
+}
+
+function renderExtras(r) {
+  const nodes = [];
+  const disc = r.forecast.discussion || [];
+  if (disc.length) {
+    nodes.push(h('details', null, h('summary', null, 'Forecaster discussion (all islands)'), disc.map((p) => h('p', null, p))));
+  }
+  nodes.push(h('details', null, h('summary', null, 'Raw JSON'), h('pre', null, JSON.stringify(r, null, 2))));
+  if (r.links) {
+    nodes.push(h('p', { class: 'lede', style: 'margin-top:1rem' }, 'Official sources: ',
+      h('a', { href: r.links.forecast }, 'NWS Honolulu surf forecast'), ', ',
+      h('a', { href: r.links.beachSafety }, 'Hawaii Beach Safety'), '.'));
+  }
+  return nodes;
+}
+
+function render(r) {
+  currentReport = r;
+  const eff = effective(r);
+  app.replaceChildren(...renderHealth(r, eff), ...renderAlerts(r, eff), ...renderSurf(r, eff), ...renderPeriods(r), ...renderExtras(r));
+}
+
+// Plain-text summary to paste into a message when comparing the report with what you see at the beach.
+function summaryText(r) {
+  const eff = effective(r);
+  const d = r.forecast.data;
+  const L = [];
+  L.push('Kauai ocean report check' + (r.demo ? ' (SAMPLE DATA)' : ''));
+  L.push(`Report built: ${r.demo ? 'sample' : when(r.generatedAt)}`);
+  if (d) L.push(`Forecast issued: ${when(d.issuedAt)} [${STATUS_TEXT[eff.fStatus]}]`);
+  else L.push('Forecast: unavailable');
+  if (r.alerts.status === 'missing') L.push('Alerts: unavailable');
+  else if (!eff.items.length) L.push(`Alerts: none${r.alerts.status === 'stale' ? ' (alerts data is stale)' : ''}`);
+  else for (const al of eff.items) L.push(`Alert: ${al.event}${al.ends || al.expires ? ` until ${when(al.ends || al.expires)}` : ''}`);
+  if (d) {
+    if (d.advisories.length) L.push(`Forecast advisory: ${d.advisories.join('; ')}`);
+    L.push('Surf, full-face feet:');
+    for (const dir of ['north', 'east', 'south', 'west']) {
+      const cells = d.surf[dir];
+      if (cells) L.push(`  ${dir[0].toUpperCase()}${dir.slice(1)}: ` + cells.map((c) => `${c.period} ${c.slot} ${c.raw ?? '?'}`).join(', '));
+    }
+    const first = d.periods[0];
+    if (first) {
+      L.push(`Weather (${first.name}): ${first.weather ?? 'n/a'}  Winds: ${first.winds ?? 'n/a'}`);
+    }
+  }
+  L.push('', 'What I actually see (which beach, time, wave height, conditions):', '', '');
+  return L.join('\n');
+}
+
+async function copySummary() {
+  if (!currentReport) { loading.textContent = 'Nothing to copy yet.'; return; }
+  const text = summaryText(currentReport);
+  const box = document.getElementById('summary');
+  box.value = text;
+  document.getElementById('summary-box').hidden = false;
+  try {
+    await navigator.clipboard.writeText(text);
+    loading.textContent = 'Copied. Paste it into a message and add what you see.';
+  } catch {
+    document.getElementById('summary-box').open = true;
+    box.focus(); box.select();
+    loading.textContent = 'Could not copy automatically. The text is selected below; copy it.';
+  }
+}
+
+let latestRequest = 0;
+async function load(source) {
+  const mine = ++latestRequest; // if a newer request starts, an older response must not overwrite it
+  if (MODE === 'server') {
+    document.getElementById('btn-live').setAttribute('aria-pressed', String(source === 'live'));
+    document.getElementById('btn-sample').setAttribute('aria-pressed', String(source === 'sample'));
+    loading.textContent = source === 'live' ? 'Fetching from NWS...' : 'Loading sample...';
+  } else {
+    loading.textContent = 'Loading...';
+  }
+  try {
+    let res;
+    if (MODE === 'static') {
+      res = await fetch(`${JSON_URL}${JSON_URL.includes('?') ? '&' : '?'}t=${Date.now()}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`the report file returned HTTP ${res.status}`);
+    } else {
+      res = await fetch(`/api/ocean-report?source=${source}`);
+      if (!res.ok) throw new Error(`Server said HTTP ${res.status}: ${await res.text()}`);
+    }
+    const report = await res.json();
+    if (mine === latestRequest) render(report);
+  } catch (e) {
+    if (mine === latestRequest) {
+      currentReport = null;
+      app.replaceChildren(h('p', { class: 'problem' }, MODE === 'static'
+        ? `Could not load the ocean report (${e.message}). Check your connection and press Refresh. Until this loads, check weather.gov/hfo directly.`
+        : `Could not get a report from the local server: ${e.message}. Is the test page window still open?`));
+    }
+  } finally {
+    if (mine === latestRequest) loading.textContent = '';
+  }
+}
+
+document.getElementById('btn-copy').addEventListener('click', copySummary);
+if (MODE === 'static') {
+  document.getElementById('btn-live').hidden = true;
+  document.getElementById('btn-sample').hidden = true;
+  const refresh = document.getElementById('btn-refresh');
+  refresh.hidden = false;
+  refresh.addEventListener('click', () => load());
+  setInterval(() => load(), AUTO_REFRESH_MS);
+  load();
+} else {
+  document.getElementById('btn-live').addEventListener('click', () => load('live'));
+  document.getElementById('btn-sample').addEventListener('click', () => load('sample'));
+  load('live');
+}
+</script>
+</body>
+</html>
